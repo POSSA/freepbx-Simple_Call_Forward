@@ -1,0 +1,13 @@
+<module>
+	<rawname>persistentcf</rawname>
+	<repo>standard</repo>
+	<name>Persistent Call Forward</name>
+	<version>0.0.1</version>
+	<publisher>POSSA</publisher>
+	<license>GPLv2+</license>
+	<changelog>
+		*0.0.1* First release 
+	</changelog>
+	<description>Provides persistent callforward featurecodes</description>
+	<category>Other</category>
+</module>
