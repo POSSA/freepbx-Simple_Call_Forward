@@ -5,9 +5,9 @@ global $astman;
 
 // Don't bother uninstalling feature codes, now module_uninstall does it
 
-// remove all Persistent Call Forward dbase entries
+// remove all Simple Call Forward dbase entries
 if ($astman) {
-	$astman->database_deltree('PCF');
+	$astman->database_deltree('SCF');
 } else {
 	fatal("Cannot connect to Asterisk Manager with ".$amp_conf["AMPMGRUSER"]."/".$amp_conf["AMPMGRPASS"]);
 }

@@ -1,8 +1,8 @@
 <?php
 if (!defined('FREEPBX_IS_AUTH')) { die('No direct script access allowed'); }
 
-function persistentcf_get_config($engine) {
-	$modulename = 'persistentcf';
+function simplecf_get_config($engine) {
+	$modulename = 'simplecf';
 	
 	// This generates the dialplan
 	global $ext;  
@@ -35,21 +35,21 @@ function persistentcf_get_config($engine) {
 
 			// Create hints context for CF codes so a device can subscribe to the DND state
 			//
-			$fcc = new featurecode($modulename, 'pcf_toggle');
+			$fcc = new featurecode($modulename, 'scf_toggle');
 			$cf_code = $fcc->getCodeActive();
 			unset($fcc);
 
 			if ($amp_conf['USEDEVSTATE'] && $cf_code != '') {
-//				$ext->addInclude('from-internal-additional','ext-cf-hints');
+				$ext->addInclude('from-internal-additional','ext-cf-hints');
 				$contextname = 'ext-cf-hints';
 				$device_list = core_devices_list("all", 'full', true);
         $base_offset = strlen($cf_code);
 				foreach ($device_list as $device) {
           if ($device['tech'] == 'sip' || $device['tech'] == 'iax2') {
             $offset = $base_offset + strlen($device['id']);
-					  $ext->add($contextname, $cf_code.$device['id'], '', new ext_goto("1",$cf_code,"app-pcf-toggle"));
+					  $ext->add($contextname, $cf_code.$device['id'], '', new ext_goto("1",$cf_code,"app-scf-toggle"));
 					  $ext->add($contextname, '_'.$cf_code.$device['id'].'.', '', new ext_set("toext",'${EXTEN:'.$offset.'}'));
-					  $ext->add($contextname, '_'.$cf_code.$device['id'].'.', '', new ext_goto("setdirect",$cf_code,"app-pcf-toggle"));
+					  $ext->add($contextname, '_'.$cf_code.$device['id'].'.', '', new ext_goto("setdirect",$cf_code,"app-scf-toggle"));
 					  $ext->addHint($contextname, $cf_code.$device['id'], "Custom:DEVCF".$device['id']);
           }
 				}
@@ -59,14 +59,13 @@ function persistentcf_get_config($engine) {
 	}
 }
 
-// Persistent Call Forwarding Toggle
-function persistentcf_pcf_toggle($c) {
+// Simple Call Forwarding Toggle
+function simplecf_scf_toggle($c) {
 	global $ext;
 	global $amp_conf;
-  global $version;
-  $ast_ge_16 = version_compare($version, "1.6", "ge");
+	global $version;
 
-	$id = "app-pcf-toggle"; // The context to be included
+	$id = "app-scf-toggle"; // The context to be included
 
 	$ext->addInclude('from-internal-additional', $id); // Add the include from from-internal
 
@@ -77,8 +76,8 @@ function persistentcf_pcf_toggle($c) {
 
 	$ext->add($id, $c, '', new ext_gotoif('$["${DB(CF/${fromext})}" = ""]', 'activate', 'deactivate'));
 
-  
-	$ext->add($id, $c, 'activate', new ext_setvar('toext', '${DB(PCF/${fromext})}'));
+
+	$ext->add($id, $c, 'activate', new ext_setvar('toext', '${DB(SCF/${fromext})}'));
 	$ext->add($id, $c, '', new ext_gotoif('$["${toext}"=""]', 'activate'));
 	$ext->add($id, $c, '', new ext_wait('1')); // $cmd,n,Wait(1)
 	$ext->add($id, $c, 'toext', new ext_setvar('DB(CF/${fromext})', '${toext}')); 
@@ -126,14 +125,13 @@ function persistentcf_pcf_toggle($c) {
 	}
 }
 
-// Define PCF Destination
-function persistentcf_pcf_define($c) {
+// Simple Call Forwarding destination
+function simplecf_scf_define($c) {
 	global $ext;
 	global $amp_conf;
-  global $version;
-  $ast_ge_16 = version_compare($version, "1.6", "ge");
+	global $version;
 
-	$id = "app-pcf-define"; // The context to be included
+	$id = "app-scf-define"; // The context to be included
 
 	$ext->addInclude('from-internal-additional', $id); // Add the include from from-internal
 
@@ -148,7 +146,7 @@ function persistentcf_pcf_define($c) {
 	
 	$ext->add($id, $c, '', new ext_gotoif('$["foo${toext}"="foo"]', 'startread'));
 	$ext->add($id, $c, '', new ext_wait('1')); // $cmd,n,Wait(1)
-	$ext->add($id, $c, '', new ext_setvar('DB(PCF/${fromext})', '${toext}')); 
+	$ext->add($id, $c, '', new ext_setvar('DB(SCF/${fromext})', '${toext}')); 
 	if ($amp_conf['FCBEEPONLY']) {
 		$ext->add($id, $c, 'hook_1', new ext_playback('beep')); // $cmd,n,Playback(...)
 	} else {
@@ -159,9 +157,3 @@ function persistentcf_pcf_define($c) {
 	}
 	$ext->add($id, $c, '', new ext_macro('hangupcall')); // $cmd,n,Macro(user-callerid)
 }
-
-
-
-
-
-

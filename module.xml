@@ -1,13 +1,14 @@
 <module>
-	<rawname>persistentcf</rawname>
+	<rawname>simplecf</rawname>
 	<repo>standard</repo>
-	<name>Persistent Call Forward</name>
-	<version>0.0.1</version>
+	<name>Simple Call Forwarding</name>
+	<version>0.0.2</version>
 	<publisher>POSSA</publisher>
 	<license>GPLv2+</license>
 	<changelog>
+		*0.0.2* General cleanup
 		*0.0.1* First release 
 	</changelog>
-	<description>Provides persistent callforward featurecodes</description>
+	<description>Provides feature codes for a simplified call forwarding. Suitable for a 'one touch' set and forget style of CF where the user rarely makes changes to the CF destination </description>
 	<category>Other</category>
 </module>
