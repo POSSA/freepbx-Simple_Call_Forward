@@ -32,7 +32,7 @@ function persistentcf_get_config($engine) {
 					}	
 				}
 			}
-/*
+
 			// Create hints context for CF codes so a device can subscribe to the DND state
 			//
 			$fcc = new featurecode($modulename, 'pcf_toggle');
@@ -54,7 +54,7 @@ function persistentcf_get_config($engine) {
           }
 				}
 			}
-*/
+
 		break;
 	}
 }
