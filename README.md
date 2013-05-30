@@ -1,5 +1,5 @@
-freepbx-Persistent_Call_Forward
-===============================
+freepbx-Simple_Call_Forward
+===========================
 
 Additional feature codes for storing and enabling call forward
 
