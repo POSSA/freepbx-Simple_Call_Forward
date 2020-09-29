@@ -2,13 +2,17 @@
 //Check if user is "logged in"
 if (!defined('FREEPBX_IS_AUTH')) { die('No direct script access allowed'); }
 
-// check to see if user has automatic updates enabled in FreePBX settings
-$cm =& cronmanager::create($db);
-$online_updates = $cm->updates_enabled() ? true : false;
+if (class_exists('cronmanager')) {
+	// check to see if user has automatic updates enabled in FreePBX settings
+	$cm =& cronmanager::create($db);
+	$online_updates = $cm->updates_enabled() ? true : false;
 
-// check dev site to see if new version of module is available
-if ($online_updates && $foo = simplecf_vercheck()) {
-	print "<br>A <b>new version of this module is available</b> from the <a target='_blank' href='http://pbxossa.org'>PBX Open Source Software Alliance</a><br>";
+	// check dev site to see if new version of module is available
+	if ($online_updates && $foo = simplecf_vercheck()) {
+		print "<br>A <b>new version of this module is available</b> from the <a target='_blank' href='http://pbxossa.org'>PBX Open Source Software Alliance</a><br>";
+	}
+} else {
+	// todo: add version check for ver. 14+
 }
 
 // get version number for display in page footer
