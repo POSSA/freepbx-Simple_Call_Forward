@@ -15,7 +15,6 @@
 		*0.0.1* First release 
 	</changelog>
 	<description>Provides feature codes for a simplified call forwarding. Suitable for a 'one touch' set and forget style of CF where the user rarely makes changes to the CF destination </description>
-	<category>Other</category>
 	<depends>
 		<engine>asterisk gt1.8</engine>
 		<version>ge2.9</version>
